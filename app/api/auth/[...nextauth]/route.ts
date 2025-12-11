@@ -1,7 +1,6 @@
-import NextAuth from 'next-auth';
-import type { NextAuthOptions } from 'next-auth';
+import NextAuth, { NextAuthOptions } from 'next-auth';
 
-export const authOptions: NextAuthOptions = {
+const authOptions: NextAuthOptions = {
   providers: [
     {
       id: 'line',
@@ -13,9 +12,9 @@ export const authOptions: NextAuthOptions = {
       },
       token: 'https://api.line.me/oauth2/v2.1/token',
       userinfo: 'https://api.line.me/v2/profile',
-      clientId: process.env.LINE_CHANNEL_ID,
-      clientSecret: process.env.LINE_CHANNEL_SECRET,
-      profile(profile) {
+      clientId: process.env.LINE_CHANNEL_ID!,
+      clientSecret: process.env.LINE_CHANNEL_SECRET!,
+      profile(profile: any) {
         return {
           id: profile.userId,
           name: profile.displayName,
@@ -30,10 +29,13 @@ export const authOptions: NextAuthOptions = {
       return token;
     },
     async session({ session, token }) {
-      if (session.user) session.user.id = token.id as string;
+      if (session?.user) {
+        (session.user as any).id = token.id as string;
+      }
       return session;
     },
   },
+  secret: process.env.NEXTAUTH_SECRET,
 };
 
 const handler = NextAuth(authOptions);
