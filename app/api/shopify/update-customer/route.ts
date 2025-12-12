@@ -17,7 +17,7 @@ async function shopifyFetch(query: string, variables = {}) {
 
 export async function POST(req: NextRequest) {
   try {
-    const { customer_id, weight_kg, disease_stage, dob } = await req.json();
+    const { customer_id, weight_kg, disease_stage, dob, line_verified, line_user_id, line_marketing_agreed } = await req.json();
     
     if (!customer_id) {
       return NextResponse.json({ error: 'Customer ID required' }, { status: 400 });
@@ -41,6 +41,7 @@ export async function POST(req: NextRequest) {
     
     if (weight_kg) {
       metafields.push({
+        namespace: 'custom',
         key: 'weight_kg',
         value: weight_kg.toString(),
         type: 'single_line_text_field'
@@ -49,6 +50,7 @@ export async function POST(req: NextRequest) {
     
     if (disease_stage) {
       metafields.push({
+        namespace: 'custom',
         key: 'disease_stage',
         value: disease_stage,
         type: 'single_line_text_field'
@@ -57,9 +59,37 @@ export async function POST(req: NextRequest) {
     
     if (dob) {
       metafields.push({
+        namespace: 'custom',
         key: 'dob',
         value: dob,
         type: 'single_line_text_field'
+      });
+    }
+    
+    if (line_verified !== undefined) {
+      metafields.push({
+        namespace: 'custom',
+        key: 'line_verified',
+        value: line_verified.toString(),
+        type: 'boolean'
+      });
+    }
+    
+    if (line_user_id) {
+      metafields.push({
+        namespace: 'custom',
+        key: 'line_user_id',
+        value: line_user_id,
+        type: 'single_line_text_field'
+      });
+    }
+    
+    if (line_marketing_agreed !== undefined) {
+      metafields.push({
+        namespace: 'custom',
+        key: 'line_marketing_agreed',
+        value: line_marketing_agreed.toString(),
+        type: 'boolean'
       });
     }
     
