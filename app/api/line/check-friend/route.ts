@@ -10,13 +10,11 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'User ID required' }, { status: 400 });
     }
     
-    const res = await fetch(`https://api.line.me/friendship/v1/status`, {
-      method: 'POST',
+    const res = await fetch(`https://api.line.me/friendship/v1/status?userIds=${userId}`, {
+      method: 'GET',
       headers: {
-        'Content-Type': 'application/json',
         'Authorization': `Bearer ${LINE_MESSAGING_TOKEN}`,
       },
-      body: JSON.stringify({ userIds: [userId] }),
     });
     
     const data = await res.json();
