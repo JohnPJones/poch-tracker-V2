@@ -21,6 +21,9 @@ export async function getCustomerByPhone(phone: string) {
           node {
             id
             phone
+            firstName
+            lastName
+            displayName
             updatedAt
             metafields(first: 20) {
               edges {
@@ -78,6 +81,7 @@ export async function getCustomerByPhone(phone: string) {
   return {
     customer_id: customer.id.split('/').pop(),
     phone: customer.phone || phone,
+    name: customer.firstName || customer.displayName || 'ลูกค้า',
     age,
     weight_kg: weight,
     disease_stage: stage,

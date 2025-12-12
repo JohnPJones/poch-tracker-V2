@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { signIn, signOut, useSession } from 'next-auth/react';
-import { Plus, LogOut } from 'lucide-react';
+import { Plus, Home, Menu, X } from 'lucide-react';
 
 export default function Home() {
   const { data: session } = useSession();
@@ -11,9 +11,14 @@ export default function Home() {
   const [products, setProducts] = useState<any[]>([]);
   const [logs, setLogs] = useState<any[]>([]);
   const [showAddMenu, setShowAddMenu] = useState(false);
+  const [showProfile, setShowProfile] = useState(false);
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
+  
+  // Form states
+  const [editWeight, setEditWeight] = useState('');
+  const [editStage, setEditStage] = useState('');
+  const [editDob, setEditDob] = useState('');
 
-  // Load customer data
   const loadCustomer = async () => {
     const res = await fetch('/api/shopify/customer', {
       method: 'POST',
@@ -24,6 +29,9 @@ export default function Home() {
     if (res.ok) {
       const customer = await res.json();
       setUser(customer);
+      setEditWeight(customer.weight_kg?.toString() || '');
+      setEditStage(customer.disease_stage || '');
+      setEditDob(customer.dob || '');
       loadOrders(customer.customer_id);
       loadLogs(customer.customer_id, selectedDate);
     } else {
@@ -56,6 +64,27 @@ export default function Home() {
     
     loadLogs(user.customer_id, selectedDate);
     setShowAddMenu(false);
+  };
+
+  const updateProfile = async () => {
+    const res = await fetch('/api/shopify/update-customer', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        customer_id: user.customer_id,
+        weight_kg: parseFloat(editWeight),
+        disease_stage: editStage,
+        dob: editDob,
+      }),
+    });
+    
+    if (res.ok) {
+      alert('บันทึกข้อมูลสำเร็จ');
+      await loadCustomer();
+      setShowProfile(false);
+    } else {
+      alert('เกิดข้อผิดพลาด');
+    }
   };
 
   useEffect(() => {
@@ -107,19 +136,16 @@ export default function Home() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 pb-20">
       {/* Header */}
       <div className="bg-white shadow-sm sticky top-0 z-10">
         <div className="max-w-2xl mx-auto px-4 py-4 flex items-center justify-between">
           <div>
-            <h1 className="text-xl font-bold">สวัสดี คุณลูกค้า</h1>
+            <h1 className="text-xl font-bold">สวัสดี {user.name}</h1>
             <p className="text-sm text-gray-600">
               {user.disease_stage?.toLowerCase().includes('pre') ? 'ก่อนฟอกไต' : 'หลังฟอกไต'}
             </p>
           </div>
-          <button onClick={() => setUser(null)} className="p-2 hover:bg-gray-100 rounded-full">
-            <LogOut className="w-5 h-5" />
-          </button>
         </div>
       </div>
 
@@ -172,19 +198,8 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Add button */}
-      <div className="max-w-2xl mx-auto px-4 mb-4">
-        <button
-          onClick={() => setShowAddMenu(true)}
-          className="w-full bg-blue-500 text-white py-4 rounded-xl font-semibold flex items-center justify-center gap-2 hover:bg-blue-600 shadow-lg"
-        >
-          <Plus className="w-5 h-5" />
-          เพิ่มมื้ออาหาร
-        </button>
-      </div>
-
       {/* Logs */}
-      <div className="max-w-2xl mx-auto px-4 pb-20">
+      <div className="max-w-2xl mx-auto px-4 pb-4">
         <h2 className="text-lg font-semibold mb-3">มื้อที่ทานวันนี้</h2>
         <div className="space-y-3">
           {logs.map((log) => (
@@ -209,13 +224,42 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Modal */}
+      {/* Footer Navigation */}
+      <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-lg">
+        <div className="max-w-2xl mx-auto flex items-center justify-around py-3">
+          <button className="flex flex-col items-center text-blue-500">
+            <Home className="w-6 h-6" />
+            <span className="text-xs mt-1">หน้าหลัก</span>
+          </button>
+          
+          <button
+            onClick={() => setShowAddMenu(true)}
+            className="flex flex-col items-center"
+          >
+            <div className="w-14 h-14 bg-blue-500 rounded-full flex items-center justify-center -mt-6 shadow-lg">
+              <Plus className="w-8 h-8 text-white" />
+            </div>
+          </button>
+          
+          <button
+            onClick={() => setShowProfile(true)}
+            className="flex flex-col items-center text-gray-600"
+          >
+            <Menu className="w-6 h-6" />
+            <span className="text-xs mt-1">ข้อมูล</span>
+          </button>
+        </div>
+      </div>
+
+      {/* Add Meal Modal */}
       {showAddMenu && (
         <div className="fixed inset-0 bg-black/50 flex items-end z-50">
           <div className="bg-white rounded-t-3xl w-full max-w-2xl p-6 max-h-[80vh] overflow-y-auto mx-auto">
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-xl font-bold">เลือกเมนูอาหาร</h2>
-              <button onClick={() => setShowAddMenu(false)}>✕</button>
+              <button onClick={() => setShowAddMenu(false)}>
+                <X className="w-6 h-6" />
+              </button>
             </div>
             <p className="text-sm text-gray-600 mb-4">จากรายการที่สั่งซื้อ 2 สัปดาห์ที่ผ่านมา</p>
             <div className="space-y-3">
@@ -237,6 +281,81 @@ export default function Home() {
             </div>
           </div>
         </div>
+      )}
+
+      {/* Profile Sidebar */}
+      {showProfile && (
+        <>
+          <div 
+            className="fixed inset-0 bg-black/50 z-40"
+            onClick={() => setShowProfile(false)}
+          />
+          <div className="fixed top-0 right-0 bottom-0 w-full max-w-md bg-white shadow-2xl z-50 transform transition-transform">
+            <div className="p-6 h-full overflow-y-auto">
+              <div className="flex justify-between items-center mb-6">
+                <h2 className="text-2xl font-bold">ข้อมูลส่วนตัว</h2>
+                <button onClick={() => setShowProfile(false)}>
+                  <X className="w-6 h-6" />
+                </button>
+              </div>
+
+              <div className="space-y-6">
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">ชื่อ</label>
+                  <div className="px-4 py-3 bg-gray-50 rounded-lg text-gray-800">
+                    {user.name}
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">อายุ</label>
+                  <div className="px-4 py-3 bg-gray-50 rounded-lg text-gray-800">
+                    {user.age} ปี
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">น้ำหนัก (kg)</label>
+                  <input
+                    type="number"
+                    value={editWeight}
+                    onChange={(e) => setEditWeight(e.target.value)}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">ระยะโรค</label>
+                  <select
+                    value={editStage}
+                    onChange={(e) => setEditStage(e.target.value)}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg"
+                  >
+                    <option value="PreDial">ก่อนฟอกไต</option>
+                    <option value="PostDial">หลังฟอกไต</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">วันเกิด</label>
+                  <input
+                    type="date"
+                    value={editDob}
+                    onChange={(e) => setEditDob(e.target.value)}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg"
+                  />
+                </div>
+
+                <button
+                  onClick={updateProfile}
+                  className="w-full bg-blue-500 text-white py-3 rounded-lg font-semibold hover:bg-blue-600"
+                >
+                  บันทึกข้อมูล
+                </button>
+              </div>
+            </div>
+          </div>
+        </>
       )}
     </div>
   );
