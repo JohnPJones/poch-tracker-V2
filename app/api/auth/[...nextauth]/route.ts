@@ -6,6 +6,7 @@ const authOptions: NextAuthOptions = {
       id: 'line',
       name: 'LINE',
       type: 'oauth',
+      issuer: 'https://access.line.me',
       authorization: {
         url: 'https://access.line.me/oauth2/v2.1/authorize',
         params: { scope: 'profile openid' },
