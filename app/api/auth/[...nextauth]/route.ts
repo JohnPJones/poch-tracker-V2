@@ -21,9 +21,9 @@ const authOptions: NextAuthOptions = {
       },
       profile(profile: any) {
         return {
-          id: profile.userId,
-          name: profile.displayName,
-          image: profile.pictureUrl,
+          id: profile.sub,
+          name: profile.name,
+          image: profile.picture,
         };
       },
     },
