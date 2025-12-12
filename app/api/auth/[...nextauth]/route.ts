@@ -14,7 +14,10 @@ const authOptions: NextAuthOptions = {
       userinfo: 'https://api.line.me/v2/profile',
       clientId: process.env.LINE_CHANNEL_ID!,
       clientSecret: process.env.LINE_CHANNEL_SECRET!,
-      idTokenJwsAlg: 'HS256',
+      idToken: true,
+      client: {
+        id_token_signed_response_alg: 'HS256',
+      },
       profile(profile: any) {
         return {
           id: profile.userId,
