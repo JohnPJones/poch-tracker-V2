@@ -1,31 +1,32 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-const LINE_MESSAGING_TOKEN = process.env.LINE_MESSAGING_CHANNEL_ACCESS_TOKEN;
+import { getToken } from 'next-auth/jwt';
+import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(req: NextRequest) {
   try {
-    const { userId } = await req.json();
-    
-    if (!userId) {
-      return NextResponse.json({ error: 'User ID required' }, { status: 400 });
+    const token = await getToken({ req });
+
+    if (!token || !token.accessToken) {
+      return NextResponse.json({ error: 'Not authenticated' }, { status: 401 });
     }
-    
-    const res = await fetch(`https://api.line.me/friendship/v1/status?userIds=${userId}`, {
+
+    const res = await fetch(`https://api.line.me/friendship/v1/status`, {
       method: 'GET',
       headers: {
-        'Authorization': `Bearer ${LINE_MESSAGING_TOKEN}`,
+        Authorization: `Bearer ${token.accessToken}`,
       },
     });
-    
+
     const data = await res.json();
-    
+
     if (!res.ok) {
       console.error('LINE API error:', data);
       return NextResponse.json({ isFriend: false });
     }
-    
-    const isFriend = data.friendStatuses?.[0]?.friendFlag || false;
-    
+
+    const isFriend = data.friendFlag;
+
     return NextResponse.json({ isFriend });
   } catch (error) {
     console.error('Error checking LINE friend status:', error);
