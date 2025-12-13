@@ -144,6 +144,7 @@ export default function Home() {
       // ลบ query params ออกจาก URL
       window.history.replaceState({}, '', '/');
     }
+  }, []);
 
 
   const proteinConsumed = logs.reduce((sum, log) => sum + log.eat_protein, 0);
