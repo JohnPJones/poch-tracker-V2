@@ -144,32 +144,7 @@ export default function Home() {
       // ลบ query params ออกจาก URL
       window.history.replaceState({}, '', '/');
     }
-  }, []);
 
-  const loadCustomerData = async (phoneNumber: string) => {
-    try {
-      const res = await fetch('/api/shopify/customer', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ phone: phoneNumber }),
-      });
-      
-      if (res.ok) {
-        const customer = await res.json();
-        console.log('Loaded customer:', customer);
-        setUser(customer);
-        setEditWeight(customer.weight_kg?.toString() || '');
-        setEditStage(customer.disease_stage || '');
-        setEditDob(customer.dob || '');
-        loadOrders(customer.customer_id);
-        loadLogs(customer.customer_id, selectedDate);
-      } else {
-        console.error('Failed to load customer');
-      }
-    } catch (error) {
-      console.error('Error loading customer:', error);
-    }
-  };
 
   const proteinConsumed = logs.reduce((sum, log) => sum + log.eat_protein, 0);
   const proteinTarget = user?.daily_protein_target || 0;
