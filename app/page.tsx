@@ -47,20 +47,31 @@ export default function Home() {
   };
 
   const loadCustomer = async () => {
-    const res = await fetch('/api/shopify/customer', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ phone }),
-    });
-    
-    if (res.ok) {
-      const customer = await res.json();
-      setUser(customer);
-      setEditWeight(customer.weight_kg?.toString() || '');
-      setEditStage(customer.disease_stage || '');
-      setEditDob(customer.dob || '');
-      loadOrders(customer.customer_id);
-      loadLogs(customer.customer_id, selectedDate);
+    await loadCustomerData(phone);
+  };
+
+  const loadCustomerData = async (phoneNumber: string) => {
+    try {
+      const res = await fetch('/api/shopify/customer', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ phone: phoneNumber }),
+      });
+      
+      if (res.ok) {
+        const customer = await res.json();
+        console.log('Loaded customer:', customer);
+        setUser(customer);
+        setEditWeight(customer.weight_kg?.toString() || '');
+        setEditStage(customer.disease_stage || '');
+        setEditDob(customer.dob || '');
+        loadOrders(customer.customer_id);
+        loadLogs(customer.customer_id, selectedDate);
+      } else {
+        console.error('Failed to load customer');
+      }
+    } catch (error) {
+      console.error('Error loading customer:', error);
     }
   };
 
@@ -121,14 +132,44 @@ export default function Home() {
   // เช็คว่ามี session จาก LINE Login callback หรือไม่
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.get('line_verified') === 'true') {
-      const phone = urlParams.get('phone');
-      if (phone) {
-        setPhone(phone);
-        setTimeout(() => loadCustomer(), 500);
-      }
+    const lineVerified = urlParams.get('line_verified');
+    const phoneParam = urlParams.get('phone');
+    
+    console.log('URL params:', { lineVerified, phoneParam });
+    
+    if (lineVerified === 'true' && phoneParam) {
+      setPhone(phoneParam);
+      // Load customer ทันที
+      loadCustomerData(phoneParam);
+      // ลบ query params ออกจาก URL
+      window.history.replaceState({}, '', '/');
     }
   }, []);
+
+  const loadCustomerData = async (phoneNumber: string) => {
+    try {
+      const res = await fetch('/api/shopify/customer', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ phone: phoneNumber }),
+      });
+      
+      if (res.ok) {
+        const customer = await res.json();
+        console.log('Loaded customer:', customer);
+        setUser(customer);
+        setEditWeight(customer.weight_kg?.toString() || '');
+        setEditStage(customer.disease_stage || '');
+        setEditDob(customer.dob || '');
+        loadOrders(customer.customer_id);
+        loadLogs(customer.customer_id, selectedDate);
+      } else {
+        console.error('Failed to load customer');
+      }
+    } catch (error) {
+      console.error('Error loading customer:', error);
+    }
+  };
 
   const proteinConsumed = logs.reduce((sum, log) => sum + log.eat_protein, 0);
   const proteinTarget = user?.daily_protein_target || 0;
