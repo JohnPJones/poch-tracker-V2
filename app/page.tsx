@@ -46,21 +46,39 @@ export default function Home() {
     });
   };
 
+  const loadCustomerData = async (phoneNumber: string) => {
+    try {
+      const res = await fetch('/api/shopify/customer', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ phone: phoneNumber }),
+      });
+      
+      if (res.ok) {
+        const customer = await res.json();
+        setUser(customer);
+        setEditWeight(customer.weight_kg?.toString() || '');
+        setEditStage(customer.disease_stage || '');
+        setEditDob(customer.dob || '');
+        loadOrders(customer.customer_id);
+        loadLogs(customer.customer_id, selectedDate);
+      } else {
+        console.error('Failed to load customer data');
+        alert('ไม่สามารถโหลดข้อมูลลูกค้าได้ กรุณาลองใหม่อีกครั้ง');
+      }
+    } catch (error) {
+      console.error('Error loading customer data:', error);
+      alert('เกิดข้อผิดพลาดในการโหลดข้อมูล');
+    } finally {
+        if (window.location.search.includes('line_verified=true')) {
+            window.history.replaceState({}, '', '/');
+        }
+    }
+  };
+
   const loadCustomer = async () => {
-    const res = await fetch('/api/shopify/customer', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ phone }),
-    });
-    
-    if (res.ok) {
-      const customer = await res.json();
-      setUser(customer);
-      setEditWeight(customer.weight_kg?.toString() || '');
-      setEditStage(customer.disease_stage || '');
-      setEditDob(customer.dob || '');
-      loadOrders(customer.customer_id);
-      loadLogs(customer.customer_id, selectedDate);
+    if (phone) {
+      await loadCustomerData(phone);
     }
   };
 
@@ -116,17 +134,17 @@ export default function Home() {
     if (user && selectedDate) {
       loadLogs(user.customer_id, selectedDate);
     }
-  }, [selectedDate]);
+  }, [user, selectedDate]);
 
   // เช็คว่ามี session จาก LINE Login callback หรือไม่
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.get('line_verified') === 'true') {
-      const phone = urlParams.get('phone');
-      if (phone) {
-        setPhone(phone);
-        setTimeout(() => loadCustomer(), 500);
-      }
+    const lineVerified = urlParams.get('line_verified');
+    const phoneParam = urlParams.get('phone');
+    
+    if (lineVerified === 'true' && phoneParam) {
+      setPhone(phoneParam);
+      loadCustomerData(phoneParam);
     }
   }, []);
 
