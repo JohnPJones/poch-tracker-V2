@@ -60,7 +60,7 @@ export default function LineCallbackClient() {
 
         // Redirect กลับไปหน้าหลัก
         setTimeout(() => {
-          window.location.href = `/?line_verified=true&phone=${customer.phone}`;
+          window.location.href = `/?line_verified=true&phone=${encodeURIComponent(customer.phone)}`;
         }, 1000);
 
       } catch (error) {
