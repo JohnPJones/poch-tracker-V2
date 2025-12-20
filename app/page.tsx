@@ -400,8 +400,69 @@ export default function Home() {
             onClick={() => setShowProfile(false)}
           />
           <div className="fixed top-0 right-0 bottom-0 w-full max-w-md bg-white shadow-2xl z-50 transform transition-transform p-6 overflow-y-auto">
-            <h2 className="text-2xl font-bold mb-6">ข้อมูลส่วนตัว</h2>
-            {/* Profile content remains the same */}
+            <div className="p-6 h-full overflow-y-auto">
+              <div className="flex justify-between items-center mb-6">
+                <h2 className="text-2xl font-bold">ข้อมูลส่วนตัว</h2>
+                <button onClick={() => setShowProfile(false)}>
+                  <X className="w-6 h-6" />
+                </button>
+              </div>
+
+              <div className="space-y-6">
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">ชื่อ</label>
+                  <div className="px-4 py-3 bg-gray-50 rounded-lg text-gray-800">
+                    {user.name}
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">อายุ</label>
+                  <div className="px-4 py-3 bg-gray-50 rounded-lg text-gray-800">
+                    {user.age} ปี
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">น้ำหนัก (kg)</label>
+                  <input
+                    type="number"
+                    value={editWeight}
+                    onChange={(e) => setEditWeight(e.target.value)}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">ระยะโรค</label>
+                  <select
+                    value={editStage}
+                    onChange={(e) => setEditStage(e.target.value)}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg"
+                  >
+                    <option value="PreDial">ก่อนฟอกไต</option>
+                    <option value="PostDial">หลังฟอกไต</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">วันเกิด</label>
+                  <input
+                    type="date"
+                    value={editDob}
+                    onChange={(e) => setEditDob(e.target.value)}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg"
+                  />
+                </div>
+
+                <button
+                  onClick={updateProfile}
+                  className="w-full bg-dark-button text-white py-3 rounded-lg font-semibold hover:bg-gray-800"
+                >
+                  บันทึกข้อมูล
+                </button>
+              </div>
+            </div>
           </div>
         </>
       )}
