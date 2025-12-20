@@ -4,9 +4,16 @@ import { insertNutritionLog } from '@/lib/bigquery';
 
 export async function POST(req: NextRequest) {
   try {
-    const { customer_id, eat_protein, eat_product_id } = await req.json();
+    const { 
+      customer_id, 
+      eat_protein, 
+      eat_calories,
+      eat_carbs,
+      eat_fat,
+      eat_product_id 
+    } = await req.json();
     
-    if (!customer_id || !eat_protein) {
+    if (!customer_id || !eat_protein || !eat_calories || !eat_carbs || !eat_fat) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
     
@@ -15,6 +22,9 @@ export async function POST(req: NextRequest) {
       customer_id,
       eat_time: new Date(),
       eat_protein: parseFloat(eat_protein),
+      eat_calories: parseFloat(eat_calories),
+      eat_carbs: parseFloat(eat_carbs),
+      eat_fat: parseFloat(eat_fat),
       eat_product_id,
     });
     

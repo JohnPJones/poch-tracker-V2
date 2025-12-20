@@ -141,10 +141,14 @@ export async function getCustomerOrders(customerId: string) {
       
       const productId = product.id.split('/').pop();
       if (!products.has(productId)) {
+        const nutrients = metafields.custom_nutrients || {};
         products.set(productId, {
           id: productId,
           name: product.title,
-          protein_g: metafields.custom_nutrients?.protein_g || 0,
+          protein_g: nutrients.protein_g || 0,
+          calories: nutrients.calories || 0,
+          carbs_g: nutrients.carbs_g || 0,
+          fat_g: nutrients.fat_g || 0,
         });
       }
     });

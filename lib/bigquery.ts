@@ -14,6 +14,9 @@ export async function insertNutritionLog(log: {
   customer_id: string;
   eat_time: Date;
   eat_protein: number;
+  eat_calories: number;
+  eat_carbs: number;
+  eat_fat: number;
   eat_product_id?: string;
 }) {
   try {
@@ -33,6 +36,9 @@ export async function getNutritionLogs(customerId: string, date: string) {
         customer_id,
         DATETIME(eat_time, 'Asia/Bangkok') as eat_time,
         eat_protein,
+        eat_calories,
+        eat_carbs,
+        eat_fat,
         eat_product_id
       FROM \`${process.env.GCP_PROJECT_ID}.${process.env.GCP_DATASET_ID}.${process.env.GCP_TABLE_ID}\`
       WHERE customer_id = @customerId
