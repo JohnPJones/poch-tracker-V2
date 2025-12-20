@@ -178,7 +178,7 @@ export default function Home() {
               <path d="M24 6.66666V15.3333M24 32.6667V41.3333M15.3333 24H6.66666M41.3333 24H32.6667M36.9333 11.0667L30.5 17.5M17.5 30.5L11.0667 36.9333M36.9333 36.9333L30.5 30.5M17.5 17.5L11.0667 11.0667" stroke="#212121" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"/>
               <path d="M31.3333 24C31.3333 28.0518 28.0518 31.3333 24 31.3333C19.9482 31.3333 16.6667 28.0518 16.6667 24C16.6667 19.9482 19.9482 16.6667 24 16.6667C28.0518 16.6667 31.3333 19.9482 31.3333 24Z" stroke="#212121" strokeWidth="4"/>
             </svg>
-            <h1 className="text-3xl font-bold text-gray-800">NubCal</h1>
+            <h1 className="text-3xl font-bold text-gray-800">Poch Tracker</h1>
           </div>
 
           <h2 className="text-2xl font-bold text-gray-900 mb-2">เข้าสู่ระบบ</h2>
@@ -217,7 +217,7 @@ export default function Home() {
               <path d="M24 6.66666V15.3333M24 32.6667V41.3333M15.3333 24H6.66666M41.3333 24H32.6667M36.9333 11.0667L30.5 17.5M17.5 30.5L11.0667 36.9333M36.9333 36.9333L30.5 30.5M17.5 17.5L11.0667 11.0667" stroke="#212121" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"/>
               <path d="M31.3333 24C31.3333 28.0518 28.0518 31.3333 24 31.3333C19.9482 31.3333 16.6667 28.0518 16.6667 24C16.6667 19.9482 19.9482 16.6667 24 16.6667C28.0518 16.6667 31.3333 19.9482 31.3333 24Z" stroke="#212121" strokeWidth="4"/>
             </svg>
-            <span className="text-xl font-bold text-gray-800">NubCal</span>
+            <span className="text-xl font-bold text-gray-800">Poch Tracker</span>
           </div>
           <div className="w-9 h-9 bg-gray-200 rounded-full">
             {/* Placeholder for profile picture */}
