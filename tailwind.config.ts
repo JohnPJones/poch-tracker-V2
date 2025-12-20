@@ -11,6 +11,9 @@ const config: Config = {
       fontFamily: {
         prompt: ['Prompt', 'sans-serif'],
       },
+      colors: {
+        'dark-button': '#212121',
+      },
     },
   },
   plugins: [],

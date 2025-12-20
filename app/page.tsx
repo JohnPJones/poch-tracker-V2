@@ -175,8 +175,8 @@ export default function Home() {
         <div className="w-full max-w-md text-center">
           <div className="inline-block mb-8">
             <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M24 6.66666V15.3333M24 32.6667V41.3333M15.3333 24H6.66666M41.3333 24H32.6667M36.9333 11.0667L30.5 17.5M17.5 30.5L11.0667 36.9333M36.9333 36.9333L30.5 30.5M17.5 17.5L11.0667 11.0667" stroke="#4ade80" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"/>
-              <path d="M31.3333 24C31.3333 28.0518 28.0518 31.3333 24 31.3333C19.9482 31.3333 16.6667 28.0518 16.6667 24C16.6667 19.9482 19.9482 16.6667 24 16.6667C28.0518 16.6667 31.3333 19.9482 31.3333 24Z" stroke="#4ade80" strokeWidth="4"/>
+              <path d="M24 6.66666V15.3333M24 32.6667V41.3333M15.3333 24H6.66666M41.3333 24H32.6667M36.9333 11.0667L30.5 17.5M17.5 30.5L11.0667 36.9333M36.9333 36.9333L30.5 30.5M17.5 17.5L11.0667 11.0667" stroke="#212121" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M31.3333 24C31.3333 28.0518 28.0518 31.3333 24 31.3333C19.9482 31.3333 16.6667 28.0518 16.6667 24C16.6667 19.9482 19.9482 16.6667 24 16.6667C28.0518 16.6667 31.3333 19.9482 31.3333 24Z" stroke="#212121" strokeWidth="4"/>
             </svg>
             <h1 className="text-3xl font-bold text-gray-800">NubCal</h1>
           </div>
@@ -191,13 +191,13 @@ export default function Home() {
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
                 placeholder="กรอกเบอร์โทรศัพท์"
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-400 focus:border-transparent text-base"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-400 focus:border-transparent text-base"
               />
             </div>
             <button
               onClick={handleLineLogin}
               disabled={!phone || isLoading}
-              className="w-full bg-gray-800 text-white py-3 rounded-lg font-semibold hover:bg-gray-900 disabled:bg-gray-400 transition text-base"
+              className="w-full bg-dark-button text-white py-3 rounded-lg font-semibold hover:bg-gray-800 disabled:bg-gray-400 transition text-base"
             >
               {isLoading ? 'กำลังตรวจสอบ...' : 'ดำเนินการต่อ'}
             </button>
@@ -214,8 +214,8 @@ export default function Home() {
         <div className="max-w-md mx-auto px-4 py-3 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <svg width="28" height="28" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M24 6.66666V15.3333M24 32.6667V41.3333M15.3333 24H6.66666M41.3333 24H32.6667M36.9333 11.0667L30.5 17.5M17.5 30.5L11.0667 36.9333M36.9333 36.9333L30.5 30.5M17.5 17.5L11.0667 11.0667" stroke="#4ade80" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"/>
-              <path d="M31.3333 24C31.3333 28.0518 28.0518 31.3333 24 31.3333C19.9482 31.3333 16.6667 28.0518 16.6667 24C16.6667 19.9482 19.9482 16.6667 24 16.6667C28.0518 16.6667 31.3333 19.9482 31.3333 24Z" stroke="#4ade80" strokeWidth="4"/>
+              <path d="M24 6.66666V15.3333M24 32.6667V41.3333M15.3333 24H6.66666M41.3333 24H32.6667M36.9333 11.0667L30.5 17.5M17.5 30.5L11.0667 36.9333M36.9333 36.9333L30.5 30.5M17.5 17.5L11.0667 11.0667" stroke="#212121" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M31.3333 24C31.3333 28.0518 28.0518 31.3333 24 31.3333C19.9482 31.3333 16.6667 28.0518 16.6667 24C16.6667 19.9482 19.9482 16.6667 24 16.6667C28.0518 16.6667 31.3333 19.9482 31.3333 24Z" stroke="#212121" strokeWidth="4"/>
             </svg>
             <span className="text-xl font-bold text-gray-800">NubCal</span>
           </div>
@@ -237,7 +237,7 @@ export default function Home() {
                 key={i}
                 onClick={() => setSelectedDate(d.toISOString().split('T')[0])}
                 className={`flex flex-col items-center p-2 rounded-lg w-14 ${
-                  isSelected ? 'bg-green-100 text-green-600' : 'text-gray-500'
+                  isSelected ? 'bg-gray-200 text-gray-800' : 'text-gray-500'
                 }`}
               >
                 <span className="text-xs">{d.toLocaleDateString('th-TH', { weekday: 'short' })}</span>
@@ -252,7 +252,7 @@ export default function Home() {
           <div className="relative w-48 mx-auto">
             <svg className="w-full h-full" viewBox="0 0 100 50">
               <path d="M10 50 A 40 40 0 0 1 90 50" fill="none" stroke="#e5e7eb" strokeWidth="10" />
-              <path d="M10 50 A 40 40 0 0 1 90 50" fill="none" stroke="#4ade80" strokeWidth="10" strokeDasharray="125.6" strokeDashoffset={125.6 * (1 - caloriesPercent / 100)} strokeLinecap="round" />
+              <path d="M10 50 A 40 40 0 0 1 90 50" fill="none" stroke="#212121" strokeWidth="10" strokeDasharray="125.6" strokeDashoffset={125.6 * (1 - caloriesPercent / 100)} strokeLinecap="round" />
             </svg>
             <div className="absolute inset-x-0 bottom-0">
               <span className="text-3xl font-bold text-gray-800">{caloriesRemaining.toFixed(0)}</span>
@@ -332,7 +332,7 @@ export default function Home() {
       {/* Footer Navigation */}
       <footer className="fixed bottom-0 left-0 right-0 bg-white border-t z-10">
         <div className="max-w-md mx-auto flex items-center justify-around py-2">
-          <button className="flex flex-col items-center text-green-500 w-1/4">
+          <button className="flex flex-col items-center text-dark-button w-1/4">
             <HomeIcon className="w-6 h-6" />
             <span className="text-xs mt-1">หน้าหลัก</span>
           </button>
@@ -343,7 +343,7 @@ export default function Home() {
           <div className="w-1/4">
             <button
               onClick={() => setShowAddMenu(true)}
-              className="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center -mt-8 shadow-lg mx-auto"
+              className="w-16 h-16 bg-dark-button rounded-full flex items-center justify-center -mt-8 shadow-lg mx-auto"
             >
               <Plus className="w-8 h-8 text-white" />
             </button>
@@ -384,7 +384,7 @@ export default function Home() {
                           <span><span className="text-yellow-500">F:</span> {product.fat_g}g</span>
                        </div>
                      </div>
-                     <Plus className="w-5 h-5 text-green-500" />
+                     <Plus className="w-5 h-5 text-dark-button" />
                    </div>
                  </button>
                ))}
