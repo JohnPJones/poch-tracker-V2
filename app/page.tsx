@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { signIn } from 'next-auth/react';
-import { Plus, Home as HomeIcon, Menu, X, BarChart, User } from 'lucide-react';
+import { Plus, Home as HomeIcon, Menu, X, BarChart, User, Users, Zap, AlignJustify } from 'lucide-react';
 
 export default function Home() {
   const [phone, setPhone] = useState('');
@@ -442,30 +442,45 @@ export default function Home() {
       </main>
 
       {/* Footer Navigation */}
-      <footer className="fixed bottom-0 left-0 right-0 bg-white border-t z-10">
+      <footer className="fixed bottom-0 left-0 right-0 bg-dark-button z-10">
         <div className="max-w-md mx-auto flex items-center justify-around py-2">
-          <button className="flex flex-col items-center text-dark-button w-1/4">
-            <HomeIcon className="w-6 h-6" />
-            <span className="text-xs mt-1">หน้าหลัก</span>
+          {/* BarChart - Active */}
+          <button className="flex flex-col items-center p-2 rounded-lg bg-white w-1/5">
+            <BarChart className="w-6 h-6 text-dark-button" />
+            {/* <span className="text-xs mt-1">หน้าหลัก</span> */}
           </button>
-          <button className="flex flex-col items-center text-gray-500 w-1/4">
-            <BarChart className="w-6 h-6" />
-            <span className="text-xs mt-1">ภาพรวม</span>
+          
+          {/* Users - Inactive */}
+          <button className="flex flex-col items-center p-2 rounded-lg w-1/5" onClick={() => setShowProfile(true)}>
+            <Users className="w-6 h-6 text-otp-verify" />
+            {/* <span className="text-xs mt-1">ภาพรวม</span> */}
           </button>
-          <div className="w-1/4">
+          
+          {/* Central Button */}
+          <div className="w-1/5">
             <button
               onClick={() => setShowAddMenu(true)}
-              className="w-16 h-16 bg-dark-button rounded-full flex items-center justify-center -mt-8 shadow-lg mx-auto"
+              className="w-14 h-14 bg-white rounded-full flex items-center justify-center -mt-8 shadow-lg mx-auto"
             >
-              <Plus className="w-8 h-8 text-white" />
+              {/* Placeholder for custom S-shaped icon */}
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2Z" stroke="#C4AA75" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M12 6C10.1193 6 8.5 7.53604 8.5 9.47222C8.5 11.4084 10.1193 12.9444 12 12.9444C13.8807 12.9444 15.5 11.4084 15.5 9.47222C15.5 7.53604 13.8807 6 12 6Z" stroke="#C4AA75" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M9.5 14.5C9.5 14.5 9.5 16.5 12 16.5C14.5 16.5 14.5 14.5 14.5 14.5" stroke="#C4AA75" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
             </button>
           </div>
-          <button
-            onClick={() => setShowProfile(true)}
-            className="flex flex-col items-center text-gray-500 w-1/4"
-          >
-            <User className="w-6 h-6" />
-            <span className="text-xs mt-1">โปรไฟล์</span>
+          
+          {/* Zap - Inactive */}
+          <button className="flex flex-col items-center p-2 rounded-lg w-1/5">
+            <Zap className="w-6 h-6 text-otp-verify" />
+            {/* <span className="text-xs mt-1">ข้อมูล</span> */}
+          </button>
+          
+          {/* Menu - Inactive */}
+          <button className="flex flex-col items-center p-2 rounded-lg w-1/5">
+            <AlignJustify className="w-6 h-6 text-otp-verify" />
+            {/* <span className="text-xs mt-1">โปรไฟล์</span> */}
           </button>
         </div>
       </footer>
