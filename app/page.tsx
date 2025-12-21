@@ -14,15 +14,19 @@ export default function Home() {
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
   const [isLoading, setIsLoading] = useState(false);
   
+  // New OTP state
+  const [showOtpScreen, setShowOtpScreen] = useState(false);
+  const [otp, setOtp] = useState<string[]>(new Array(6).fill(""));
+  const [otpError, setOtpError] = useState('');
+
   // Form states
   const [editWeight, setEditWeight] = useState('');
   const [editStage, setEditStage] = useState('');
   const [editDob, setEditDob] = useState('');
 
-  const handleLineLogin = async () => {
+  // This function now starts the original login process
+  const startShopifyAndLineProcess = async () => {
     setIsLoading(true);
-    
-    // เช็ค Shopify ก่อน
     const res = await fetch('/api/shopify/customer', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -36,14 +40,62 @@ export default function Home() {
     }
     
     const customer = await res.json();
-    
-    // เก็บข้อมูลลูกค้าไว้ใน localStorage ชั่วคราว
     localStorage.setItem('pending_customer', JSON.stringify(customer));
-    
-    // เปิด LINE Login
     signIn('line', { 
       callbackUrl: window.location.origin + '/auth/line-callback'
     });
+  };
+
+  const handleSendOtp = async () => {
+    setIsLoading(true);
+    setOtpError('');
+    try {
+      const res = await fetch('/api/twilio/send-otp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ phone }),
+      });
+
+      if (!res.ok) {
+        throw new Error('ไม่สามารถส่ง OTP ได้');
+      }
+
+      setShowOtpScreen(true);
+    } catch (error: any) {
+      alert(error.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  
+  const handleVerifyOtp = async () => {
+    setIsLoading(true);
+    setOtpError('');
+    const otpCode = otp.join('');
+
+    try {
+      const res = await fetch('/api/twilio/check-otp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ phone, code: otpCode }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok || data.status !== 'approved') {
+        setOtpError('รหัส OTP ไม่ถูกต้อง');
+        setOtp(new Array(6).fill("")); // Reset OTP input
+        return;
+      }
+
+      // OTP is correct, proceed with original flow
+      await startShopifyAndLineProcess();
+
+    } catch (error) {
+      setOtpError('เกิดข้อผิดพลาดในการยืนยัน OTP');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const loadCustomerData = async (phoneNumber: string) => {
@@ -168,7 +220,67 @@ export default function Home() {
   const fatPercent = fatTarget > 0 ? Math.min((fatConsumed / fatTarget) * 100, 100) : 0;
   
   const caloriesRemaining = caloriesTarget - caloriesConsumed;
+  
+  const handleOtpChange = (element: any, index: number) => {
+    if (isNaN(element.value)) return false;
 
+    setOtp([...otp.map((d, idx) => (idx === index ? element.value : d))]);
+
+    // Focus next input
+    if (element.nextSibling) {
+      element.nextSibling.focus();
+    }
+  };
+
+  const OtpScreen = () => (
+    <div className="fixed inset-0 bg-white z-20 flex flex-col items-center justify-center p-4 text-center" style={{color: '#212121'}}>
+      <button onClick={() => setShowOtpScreen(false)} className="absolute top-4 left-4">
+        {/* Back arrow icon */}
+      </button>
+      <h2 className="text-2xl font-bold mb-2">เราได้ส่งรหัสยืนยันไปที่</h2>
+      <p className="mb-8">กรุณากรอกรหัสที่ได้รับทาง SMS ที่เบอร์ {phone}</p>
+      
+      <div className="flex gap-2 justify-center mb-6">
+        {otp.map((data, index) => {
+          return (
+            <input
+              className="w-12 h-14 text-center text-2xl border-2 rounded-lg focus:ring-2 focus:border-otp-verify focus:ring-otp-verify"
+              key={index}
+              type="text"
+              name="otp"
+              maxLength={1}
+              value={data}
+              onChange={e => handleOtpChange(e.target, index)}
+              onFocus={e => e.target.select()}
+            />
+          );
+        })}
+      </div>
+      
+      {otpError && <p className="text-red-500 mb-4">{otpError}</p>}
+
+      <button
+        onClick={handleVerifyOtp}
+        disabled={isLoading || otp.join('').length < 6}
+        className="w-full max-w-xs text-white py-3 rounded-lg font-semibold transition text-base"
+        style={{ backgroundColor: '#C4AA75' }}
+      >
+        {isLoading ? 'กำลังตรวจสอบ...' : 'ยืนยัน'}
+      </button>
+
+      <div className="mt-6 text-sm">
+        <span>ไม่ได้รับรหัส? </span>
+        <button className="font-semibold" style={{ color: '#C4AA75' }}>
+          ส่งอีกครั้ง
+        </button>
+      </div>
+    </div>
+  );
+
+  if (showOtpScreen) {
+    return <OtpScreen />;
+  }
+  
   if (!user) {
     return (
       <div className="min-h-screen bg-white flex items-center justify-center p-4">
@@ -195,11 +307,11 @@ export default function Home() {
               />
             </div>
             <button
-              onClick={handleLineLogin}
+              onClick={handleSendOtp}
               disabled={!phone || isLoading}
               className="w-full bg-dark-button text-white py-3 rounded-lg font-semibold hover:bg-gray-800 disabled:bg-gray-400 transition text-base"
             >
-              {isLoading ? 'กำลังตรวจสอบ...' : 'ดำเนินการต่อ'}
+              {isLoading ? 'กำลังส่ง OTP...' : 'ดำเนินการต่อ'}
             </button>
           </div>
         </div>

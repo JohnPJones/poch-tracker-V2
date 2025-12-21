@@ -14,6 +14,7 @@ const config: Config = {
       },
       colors: {
         'dark-button': '#212121',
+        'otp-verify': '#C4AA75',
       },
     },
   },
