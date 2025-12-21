@@ -244,9 +244,10 @@ export default function Home() {
         {otp.map((data, index) => {
           return (
             <input
-              className="w-12 h-14 text-center text-2xl border-2 rounded-lg focus:ring-2 focus:border-otp-verify focus:ring-otp-verify"
+              className="w-12 h-14 text-center text-2xl border-2 rounded-lg focus:ring-2 focus:border-otp-verify focus:ring-otp-verify focus:outline-none"
               key={index}
-              type="text"
+              type="tel"
+              inputMode="numeric"
               name="otp"
               maxLength={1}
               value={data}
@@ -309,7 +310,7 @@ export default function Home() {
             <button
               onClick={handleSendOtp}
               disabled={!phone || isLoading}
-              className="w-full bg-dark-button text-white py-3 rounded-lg font-semibold hover:bg-gray-800 disabled:bg-gray-400 transition text-base"
+              className="w-full bg-otp-verify text-white py-3 rounded-lg font-semibold hover:opacity-90 disabled:bg-gray-400 transition text-base"
             >
               {isLoading ? 'กำลังส่ง OTP...' : 'ดำเนินการต่อ'}
             </button>
@@ -442,8 +443,8 @@ export default function Home() {
       </main>
 
       {/* Footer Navigation */}
-      <footer className="fixed bottom-0 left-0 right-0 bg-dark-button z-10">
-        <div className="max-w-md mx-auto flex items-center justify-around py-2">
+      <footer className="fixed bottom-0 left-0 right-0 z-10 mx-4 mb-4">
+        <div className="max-w-md mx-auto flex items-center justify-around py-2 bg-dark-button rounded-full shadow-lg">
           {/* BarChart - Active */}
           <button className="flex flex-col items-center p-2 rounded-lg bg-white w-1/5">
             <BarChart className="w-6 h-6 text-dark-button" />
