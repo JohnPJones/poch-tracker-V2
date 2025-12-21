@@ -19,9 +19,15 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Server configuration error' }, { status: 500 });
     }
 
+    // Format phone number to E.164
+    let formattedPhone = phone;
+    if (formattedPhone.startsWith('0')) {
+      formattedPhone = `+66${formattedPhone.substring(1)}`;
+    }
+
     const verification = await client.verify.v2.services(verifySid)
       .verifications
-      .create({ to: phone, channel: 'sms' });
+      .create({ to: formattedPhone, channel: 'sms' });
 
     console.log('Twilio verification status:', verification.status);
 
