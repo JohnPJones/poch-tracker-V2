@@ -362,7 +362,7 @@ export default function Home() {
         <div className="bg-white rounded-2xl shadow-sm p-6 mb-4 flex items-center justify-between">
           <div>
             <span className="text-5xl font-bold text-gray-800">{caloriesRemaining.toFixed(0)}</span>
-            <p className="text-lg text-gray-500">Calories left</p>
+            <p className="text-lg text-gray-500">แคลอรี่คงเหลือ</p>
           </div>
           <div className="relative w-24 h-24">
             <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
@@ -380,7 +380,7 @@ export default function Home() {
           {/* Protein */}
           <div className="bg-white rounded-2xl shadow-sm p-4 flex flex-col items-start justify-center">
             <h3 className="text-2xl font-bold text-gray-800">{proteinConsumed.toFixed(0)}g</h3>
-            <p className="text-sm text-gray-500 mb-2">Protein left</p>
+            <p className="text-sm text-gray-500 mb-2">โปรตีนคงเหลือ</p>
             <div className="relative w-16 h-16 self-center">
               <svg className="w-full h-full transform -rotate-90"><circle cx="32" cy="32" r="28" stroke="#fecaca" strokeWidth="8" fill="none"/><circle cx="32" cy="32" r="28" stroke="#ef4444" strokeWidth="8" fill="none" strokeDasharray={2 * Math.PI * 28} strokeDashoffset={2 * Math.PI * 28 * (1 - proteinPercent/100)} strokeLinecap="round"/></svg>
               <div className="absolute inset-0 flex items-center justify-center">
@@ -391,7 +391,7 @@ export default function Home() {
           {/* Carbs */}
           <div className="bg-white rounded-2xl shadow-sm p-4 flex flex-col items-start justify-center">
             <h3 className="text-2xl font-bold text-gray-800">{carbsConsumed.toFixed(0)}g</h3>
-            <p className="text-sm text-gray-500 mb-2">Carbs left</p>
+            <p className="text-sm text-gray-500 mb-2">คาร์บคงเหลือ</p>
             <div className="relative w-16 h-16 self-center">
               <svg className="w-full h-full transform -rotate-90"><circle cx="32" cy="32" r="28" stroke="#bfdbfe" strokeWidth="8" fill="none"/><circle cx="32" cy="32" r="28" stroke="#3b82f6" strokeWidth="8" fill="none" strokeDasharray={2 * Math.PI * 28} strokeDashoffset={2 * Math.PI * 28 * (1 - carbsPercent/100)} strokeLinecap="round"/></svg>
               <div className="absolute inset-0 flex items-center justify-center">
@@ -402,7 +402,7 @@ export default function Home() {
           {/* Fat */}
           <div className="bg-white rounded-2xl shadow-sm p-4 flex flex-col items-start justify-center">
             <h3 className="text-2xl font-bold text-gray-800">{fatConsumed.toFixed(0)}g</h3>
-            <p className="text-sm text-gray-500 mb-2">Fat left</p>
+            <p className="text-sm text-gray-500 mb-2">ไขมันคงเหลือ</p>
             <div className="relative w-16 h-16 self-center">
               <svg className="w-full h-full transform -rotate-90"><circle cx="32" cy="32" r="28" stroke="#fef08a" strokeWidth="8" fill="none"/><circle cx="32" cy="32" r="28" stroke="#eab308" strokeWidth="8" fill="none" strokeDasharray={2 * Math.PI * 28} strokeDashoffset={2 * Math.PI * 28 * (1 - fatPercent/100)} strokeLinecap="round"/></svg>
               <div className="absolute inset-0 flex items-center justify-center">
@@ -414,7 +414,7 @@ export default function Home() {
 
         {/* Meal List */}
         <div>
-          <h2 className="text-xl font-bold mb-4 text-gray-800">Recently uploaded</h2>
+          <h2 className="text-xl font-bold mb-4 text-gray-800">รายการที่เพิ่งอัปโหลด</h2>
           <div className="space-y-4">
             {logs.map((log) => (
               <div key={log.log_id} className="bg-white rounded-2xl p-4 shadow-sm flex items-center gap-4">
@@ -429,7 +429,7 @@ export default function Home() {
                   </div>
                   <p className="text-lg font-bold text-gray-700 flex items-center gap-2">
                     <Flame className="w-5 h-5 text-red-500" />
-                    {log.eat_calories} calories
+                    {log.eat_calories} แคลอรี่
                   </p>
                   <div className="flex gap-4 text-sm text-gray-500 mt-2">
                     <span className="flex items-center gap-1"><Leaf className="w-4 h-4 text-red-500" /> {log.eat_protein}g</span>
@@ -449,11 +449,11 @@ export default function Home() {
           <div className="flex items-center justify-around py-4">
             <button className="flex flex-col items-center justify-center w-1/4">
               <HomeIcon className="w-7 h-7 text-gray-800" />
-              <span className="text-xs mt-1">Home</span>
+              <span className="text-xs mt-1">หน้าหลัก</span>
             </button>
             <button className="flex flex-col items-center justify-center w-1/4">
               <LayoutGrid className="w-7 h-7 text-gray-400" />
-              <span className="text-xs mt-1 text-gray-400">Progress</span>
+              <span className="text-xs mt-1 text-gray-400">ความคืบหน้า</span>
             </button>
             <button
               onClick={() => setShowAddMenu(true)}
@@ -463,11 +463,11 @@ export default function Home() {
             </button>
             <button className="flex flex-col items-center justify-center w-1/4">
               <Settings className="w-7 h-7 text-gray-400" />
-              <span className="text-xs mt-1 text-gray-400">Settings</span>
+              <span className="text-xs mt-1 text-gray-400">ตั้งค่า</span>
             </button>
             <button className="flex flex-col items-center justify-center w-1/4" onClick={() => setShowProfile(true)}>
               <User className="w-7 h-7 text-gray-400" />
-              <span className="text-xs mt-1 text-gray-400">Profile</span>
+              <span className="text-xs mt-1 text-gray-400">โปรไฟล์</span>
             </button>
           </div>
         </div>

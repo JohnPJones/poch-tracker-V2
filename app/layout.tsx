@@ -1,6 +1,14 @@
 import type { Metadata } from 'next';
 import { Providers } from './providers';
 import './globals.css';
+import { Prompt } from 'next/font/google';
+
+const prompt = Prompt({
+  weight: ['300', '400', '500', '600', '700'],
+  subsets: ['thai', 'latin'],
+  display: 'swap',
+  variable: '--font-prompt',
+});
 
 export const metadata: Metadata = {
   title: 'ติดตามโภชนาการไต',
@@ -14,15 +22,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="th">
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
-        <link 
-          href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" 
-          rel="stylesheet" 
-        />
-      </head>
-      <body style={{ fontFamily: "'Prompt', sans-serif" }}>
+      <body className={prompt.variable}>
         <Providers>{children}</Providers>
       </body>
     </html>

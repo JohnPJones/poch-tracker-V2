@@ -9,7 +9,7 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['Prompt', 'sans-serif'], // Set Prompt as the default sans font
+        sans: ['var(--font-prompt)', 'sans-serif'],
         prompt: ['Prompt', 'sans-serif'],
       },
       colors: {
