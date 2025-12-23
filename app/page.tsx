@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { signIn } from 'next-auth/react';
-import { Plus, Home as HomeIcon, Menu, X, BarChart, User, Users, Zap, AlignJustify } from 'lucide-react';
+import { Plus, Home as HomeIcon, Menu, X, BarChart, User, Users, Zap, AlignJustify, Apple, Bell, Flame, Leaf, Wheat, Droplet, Settings, LayoutGrid } from 'lucide-react';
 
 export default function Home() {
   const [phone, setPhone] = useState('');
@@ -326,60 +326,51 @@ export default function Home() {
       <header className="sticky top-0 bg-white/80 backdrop-blur-sm z-10">
         <div className="max-w-md mx-auto px-4 py-3 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <svg width="28" height="28" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M24 6.66666V15.3333M24 32.6667V41.3333M15.3333 24H6.66666M41.3333 24H32.6667M36.9333 11.0667L30.5 17.5M17.5 30.5L11.0667 36.9333M36.9333 36.9333L30.5 30.5M17.5 17.5L11.0667 11.0667" stroke="#212121" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"/>
-              <path d="M31.3333 24C31.3333 28.0518 28.0518 31.3333 24 31.3333C19.9482 31.3333 16.6667 28.0518 16.6667 24C16.6667 19.9482 19.9482 16.6667 24 16.6667C28.0518 16.6667 31.3333 19.9482 31.3333 24Z" stroke="#212121" strokeWidth="4"/>
-            </svg>
-            <span className="text-xl font-bold text-gray-800">Poch Tracker</span>
+            <Apple className="w-7 h-7" />
+            <span className="text-2xl font-bold text-gray-800">Cal AI</span>
           </div>
-          <div className="w-9 h-9 bg-gray-200 rounded-full">
-            {/* Placeholder for profile picture */}
+          <div className="relative">
+            <Bell className="w-7 h-7" />
+            <span className="absolute top-0 right-0 block h-2 w-2 rounded-full bg-red-500" />
           </div>
         </div>
       </header>
 
       <main className="max-w-md mx-auto p-4 pb-28">
         {/* Date Selector */}
-        <div className="flex justify-between items-center mb-4">
-          {[...Array(5)].map((_, i) => {
+        <div className="flex justify-between items-center mb-6">
+          {[...Array(7)].map((_, i) => {
             const d = new Date();
-            d.setDate(d.getDate() - i);
+            d.setDate(d.getDate() - (6 - i));
             const isSelected = d.toISOString().split('T')[0] === selectedDate;
             return (
               <button
                 key={i}
                 onClick={() => setSelectedDate(d.toISOString().split('T')[0])}
-                className={`flex flex-col items-center p-2 rounded-lg w-14 ${
-                  isSelected ? 'bg-gray-200 text-gray-800' : 'text-gray-500'
+                className={`flex flex-col items-center justify-center h-16 w-12 rounded-2xl transition-all duration-300 ${
+                  isSelected ? 'bg-black text-white' : 'bg-gray-100 text-gray-500'
                 }`}
               >
-                <span className="text-xs">{d.toLocaleDateString('th-TH', { weekday: 'short' })}</span>
-                <span className="font-bold">{d.getDate()}</span>
+                <span className="text-sm uppercase">{d.toLocaleDateString('en-US', { weekday: 'short' }).charAt(0)}</span>
+                <span className="text-lg font-bold">{d.getDate()}</span>
               </button>
             );
-          }).reverse()}
+          })}
         </div>
 
         {/* Main Calorie Summary */}
-        <div className="bg-white rounded-2xl shadow-sm p-6 mb-4 text-center">
-          <div className="relative w-48 mx-auto">
-            <svg className="w-full h-full" viewBox="0 0 100 50">
-              <path d="M10 50 A 40 40 0 0 1 90 50" fill="none" stroke="#e5e7eb" strokeWidth="10" />
-              <path d="M10 50 A 40 40 0 0 1 90 50" fill="none" stroke="#212121" strokeWidth="10" strokeDasharray="125.6" strokeDashoffset={125.6 * (1 - caloriesPercent / 100)} strokeLinecap="round" />
-            </svg>
-            <div className="absolute inset-x-0 bottom-0">
-              <span className="text-3xl font-bold text-gray-800">{caloriesRemaining.toFixed(0)}</span>
-              <p className="text-sm text-gray-500">แคลอรี่ที่เหลือ</p>
-            </div>
+        <div className="bg-white rounded-2xl shadow-sm p-6 mb-4 flex items-center justify-between">
+          <div>
+            <span className="text-5xl font-bold text-gray-800">{caloriesRemaining.toFixed(0)}</span>
+            <p className="text-lg text-gray-500">Calories left</p>
           </div>
-          <div className="flex justify-between mt-4 text-sm">
-            <div className="text-left">
-              <p className="text-gray-500">การกิน</p>
-              <p className="font-bold">{caloriesConsumed.toFixed(0)}</p>
-            </div>
-            <div className="text-right">
-              <p className="text-gray-500">เผาผลาญ</p>
-              <p className="font-bold">0</p>
+          <div className="relative w-24 h-24">
+            <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
+              <circle cx="50" cy="50" r="45" fill="none" stroke="#e5e7eb" strokeWidth="10" />
+              <circle cx="50" cy="50" r="45" fill="none" stroke="#212121" strokeWidth="10" strokeDasharray="282.6" strokeDashoffset={282.6 * (1 - caloriesPercent / 100)} strokeLinecap="round" />
+            </svg>
+            <div className="absolute inset-0 flex items-center justify-center">
+              <Flame className="w-8 h-8 text-gray-700" />
             </div>
           </div>
         </div>
@@ -387,53 +378,63 @@ export default function Home() {
         {/* Macronutrient Breakdown */}
         <div className="grid grid-cols-3 gap-4 mb-4">
           {/* Protein */}
-          <div className="bg-white rounded-2xl shadow-sm p-4 flex flex-col items-center justify-center">
-            <div className="relative w-20 h-20">
-              <svg className="w-full h-full transform -rotate-90"><circle cx="40" cy="40" r="34" stroke="#fecaca" strokeWidth="6" fill="none"/><circle cx="40" cy="40" r="34" stroke="#ef4444" strokeWidth="6" fill="none" strokeDasharray={2 * Math.PI * 34} strokeDashoffset={2 * Math.PI * 34 * (1 - proteinPercent/100)} strokeLinecap="round"/></svg>
-              <div className="absolute inset-0 flex items-center justify-center font-bold text-xl">{proteinConsumed.toFixed(0)}<span className="text-xs">g</span></div>
+          <div className="bg-white rounded-2xl shadow-sm p-4 flex flex-col items-start justify-center">
+            <h3 className="text-2xl font-bold text-gray-800">{proteinConsumed.toFixed(0)}g</h3>
+            <p className="text-sm text-gray-500 mb-2">Protein left</p>
+            <div className="relative w-16 h-16 self-center">
+              <svg className="w-full h-full transform -rotate-90"><circle cx="32" cy="32" r="28" stroke="#fecaca" strokeWidth="8" fill="none"/><circle cx="32" cy="32" r="28" stroke="#ef4444" strokeWidth="8" fill="none" strokeDasharray={2 * Math.PI * 28} strokeDashoffset={2 * Math.PI * 28 * (1 - proteinPercent/100)} strokeLinecap="round"/></svg>
+              <div className="absolute inset-0 flex items-center justify-center">
+                <Leaf className="w-6 h-6 text-red-500" />
+              </div>
             </div>
-            <p className="font-semibold mt-2">โปรตีน</p>
-            <p className="text-xs text-gray-500">{proteinConsumed.toFixed(0)}/{proteinTarget.toFixed(0)}</p>
           </div>
           {/* Carbs */}
-          <div className="bg-white rounded-2xl shadow-sm p-4 flex flex-col items-center justify-center">
-            <div className="relative w-20 h-20">
-              <svg className="w-full h-full transform -rotate-90"><circle cx="40" cy="40" r="34" stroke="#bfdbfe" strokeWidth="6" fill="none"/><circle cx="40" cy="40" r="34" stroke="#3b82f6" strokeWidth="6" fill="none" strokeDasharray={2 * Math.PI * 34} strokeDashoffset={2 * Math.PI * 34 * (1 - carbsPercent/100)} strokeLinecap="round"/></svg>
-              <div className="absolute inset-0 flex items-center justify-center font-bold text-xl">{carbsConsumed.toFixed(0)}<span className="text-xs">g</span></div>
+          <div className="bg-white rounded-2xl shadow-sm p-4 flex flex-col items-start justify-center">
+            <h3 className="text-2xl font-bold text-gray-800">{carbsConsumed.toFixed(0)}g</h3>
+            <p className="text-sm text-gray-500 mb-2">Carbs left</p>
+            <div className="relative w-16 h-16 self-center">
+              <svg className="w-full h-full transform -rotate-90"><circle cx="32" cy="32" r="28" stroke="#bfdbfe" strokeWidth="8" fill="none"/><circle cx="32" cy="32" r="28" stroke="#3b82f6" strokeWidth="8" fill="none" strokeDasharray={2 * Math.PI * 28} strokeDashoffset={2 * Math.PI * 28 * (1 - carbsPercent/100)} strokeLinecap="round"/></svg>
+              <div className="absolute inset-0 flex items-center justify-center">
+                <Wheat className="w-6 h-6 text-blue-500" />
+              </div>
             </div>
-            <p className="font-semibold mt-2">แป้ง</p>
-            <p className="text-xs text-gray-500">{carbsConsumed.toFixed(0)}/{carbsTarget.toFixed(0)}</p>
           </div>
           {/* Fat */}
-          <div className="bg-white rounded-2xl shadow-sm p-4 flex flex-col items-center justify-center">
-            <div className="relative w-20 h-20">
-              <svg className="w-full h-full transform -rotate-90"><circle cx="40" cy="40" r="34" stroke="#fef08a" strokeWidth="6" fill="none"/><circle cx="40" cy="40" r="34" stroke="#eab308" strokeWidth="6" fill="none" strokeDasharray={2 * Math.PI * 34} strokeDashoffset={2 * Math.PI * 34 * (1 - fatPercent/100)} strokeLinecap="round"/></svg>
-              <div className="absolute inset-0 flex items-center justify-center font-bold text-xl">{fatConsumed.toFixed(0)}<span className="text-xs">g</span></div>
+          <div className="bg-white rounded-2xl shadow-sm p-4 flex flex-col items-start justify-center">
+            <h3 className="text-2xl font-bold text-gray-800">{fatConsumed.toFixed(0)}g</h3>
+            <p className="text-sm text-gray-500 mb-2">Fat left</p>
+            <div className="relative w-16 h-16 self-center">
+              <svg className="w-full h-full transform -rotate-90"><circle cx="32" cy="32" r="28" stroke="#fef08a" strokeWidth="8" fill="none"/><circle cx="32" cy="32" r="28" stroke="#eab308" strokeWidth="8" fill="none" strokeDasharray={2 * Math.PI * 28} strokeDashoffset={2 * Math.PI * 28 * (1 - fatPercent/100)} strokeLinecap="round"/></svg>
+              <div className="absolute inset-0 flex items-center justify-center">
+                <Droplet className="w-6 h-6 text-yellow-500" />
+              </div>
             </div>
-            <p className="font-semibold mt-2">ไขมัน</p>
-            <p className="text-xs text-gray-500">{fatConsumed.toFixed(0)}/{fatTarget.toFixed(0)}</p>
           </div>
         </div>
 
         {/* Meal List */}
         <div>
-          <h2 className="text-lg font-semibold mb-3 text-gray-800">รายการอาหารที่กิน</h2>
-          <div className="space-y-3">
+          <h2 className="text-xl font-bold mb-4 text-gray-800">Recently uploaded</h2>
+          <div className="space-y-4">
             {logs.map((log) => (
-              <div key={log.log_id} className="bg-white rounded-xl p-4 shadow-sm flex items-center gap-4">
-                <div className="w-16 h-16 bg-gray-100 rounded-lg">
+              <div key={log.log_id} className="bg-white rounded-2xl p-4 shadow-sm flex items-center gap-4">
+                <div className="w-20 h-20 bg-gray-100 rounded-xl overflow-hidden">
                   {/* Placeholder for food image */}
+                  <img src={`https://source.unsplash.com/random/100x100?food,${log.log_id}`} alt="Food" className="w-full h-full object-cover" />
                 </div>
                 <div className="flex-grow">
                   <div className="flex justify-between items-start">
-                    <h3 className="font-semibold">เมนูอาหาร</h3>
-                    <p className="text-xs text-gray-500">{new Date(log.eat_time).toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit' })}</p>
+                    <h3 className="font-semibold text-lg">เมนูอาหาร</h3>
+                    <p className="text-sm text-gray-400">{new Date(log.eat_time).toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit' })}</p>
                   </div>
-                  <p className="text-sm font-bold text-gray-700">{log.eat_calories} แคลอรี่</p>
-                  <div className="flex gap-4 text-xs text-gray-500 mt-1">
-                    <span><span className="text-red-500">P:</span> {log.eat_protein}g</span>
-                    <span><span className="text-blue-500">C:</span> {log.eat_carbs}g</span>
-                    <span><span className="text-yellow-500">F:</span> {log.eat_fat}g</span>
+                  <p className="text-lg font-bold text-gray-700 flex items-center gap-2">
+                    <Flame className="w-5 h-5 text-red-500" />
+                    {log.eat_calories} calories
+                  </p>
+                  <div className="flex gap-4 text-sm text-gray-500 mt-2">
+                    <span className="flex items-center gap-1"><Leaf className="w-4 h-4 text-red-500" /> {log.eat_protein}g</span>
+                    <span className="flex items-center gap-1"><Wheat className="w-4 h-4 text-blue-500" /> {log.eat_carbs}g</span>
+                    <span className="flex items-center gap-1"><Droplet className="w-4 h-4 text-yellow-500" /> {log.eat_fat}g</span>
                   </div>
                 </div>
               </div>
@@ -443,46 +444,32 @@ export default function Home() {
       </main>
 
       {/* Footer Navigation */}
-      <footer className="fixed bottom-0 left-0 right-0 z-10 mx-4 mb-4">
-        <div className="max-w-md mx-auto flex items-center justify-around py-2 bg-dark-button rounded-full shadow-lg">
-          {/* BarChart - Active */}
-          <button className="flex flex-col items-center p-2 rounded-lg bg-white w-1/5">
-            <BarChart className="w-6 h-6 text-dark-button" />
-            {/* <span className="text-xs mt-1">หน้าหลัก</span> */}
-          </button>
-          
-          {/* Users - Inactive */}
-          <button className="flex flex-col items-center p-2 rounded-lg w-1/5" onClick={() => setShowProfile(true)}>
-            <Users className="w-6 h-6 text-otp-verify" />
-            {/* <span className="text-xs mt-1">ภาพรวม</span> */}
-          </button>
-          
-          {/* Central Button */}
-          <div className="w-1/5">
+      <footer className="fixed bottom-0 left-0 right-0 z-10">
+        <div className="max-w-md mx-auto bg-white rounded-t-3xl shadow-[0_-10px_40px_-10px_rgba(0,0,0,0.1)]">
+          <div className="flex items-center justify-around py-4">
+            <button className="flex flex-col items-center justify-center w-1/4">
+              <HomeIcon className="w-7 h-7 text-gray-800" />
+              <span className="text-xs mt-1">Home</span>
+            </button>
+            <button className="flex flex-col items-center justify-center w-1/4">
+              <LayoutGrid className="w-7 h-7 text-gray-400" />
+              <span className="text-xs mt-1 text-gray-400">Progress</span>
+            </button>
             <button
               onClick={() => setShowAddMenu(true)}
-              className="w-14 h-14 bg-white rounded-full flex items-center justify-center -mt-8 shadow-lg mx-auto"
+              className="w-16 h-16 bg-black text-white rounded-full flex items-center justify-center -mt-10 shadow-lg"
             >
-              {/* Placeholder for custom S-shaped icon */}
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2Z" stroke="#C4AA75" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                <path d="M12 6C10.1193 6 8.5 7.53604 8.5 9.47222C8.5 11.4084 10.1193 12.9444 12 12.9444C13.8807 12.9444 15.5 11.4084 15.5 9.47222C15.5 7.53604 13.8807 6 12 6Z" stroke="#C4AA75" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                <path d="M9.5 14.5C9.5 14.5 9.5 16.5 12 16.5C14.5 16.5 14.5 14.5 14.5 14.5" stroke="#C4AA75" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
+              <Plus className="w-8 h-8" />
+            </button>
+            <button className="flex flex-col items-center justify-center w-1/4">
+              <Settings className="w-7 h-7 text-gray-400" />
+              <span className="text-xs mt-1 text-gray-400">Settings</span>
+            </button>
+            <button className="flex flex-col items-center justify-center w-1/4" onClick={() => setShowProfile(true)}>
+              <User className="w-7 h-7 text-gray-400" />
+              <span className="text-xs mt-1 text-gray-400">Profile</span>
             </button>
           </div>
-          
-          {/* Zap - Inactive */}
-          <button className="flex flex-col items-center p-2 rounded-lg w-1/5">
-            <Zap className="w-6 h-6 text-otp-verify" />
-            {/* <span className="text-xs mt-1">ข้อมูล</span> */}
-          </button>
-          
-          {/* Menu - Inactive */}
-          <button className="flex flex-col items-center p-2 rounded-lg w-1/5">
-            <AlignJustify className="w-6 h-6 text-otp-verify" />
-            {/* <span className="text-xs mt-1">โปรไฟล์</span> */}
-          </button>
         </div>
       </footer>
 
